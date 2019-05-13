@@ -29,6 +29,23 @@ const router = new VueRouter({
   store,
   mode: 'history'
 })
+router.beforeEach((to, from, next)=>{
+    const requiresAuth = to.matched.some(record=>record.meta.requiresAuth)
+
+    const currentUser = store.state.currentUser
+
+    if(requiresAuth && !currentUser){
+        next('/')
+    }
+    else if(to.path == '/login'&& currentUser){
+        next('/events')
+    }
+    else{
+        next()
+    }
+
+
+})
 
 const app = new Vue({
     el: '#app',router,

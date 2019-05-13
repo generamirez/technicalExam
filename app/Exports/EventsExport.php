@@ -3,10 +3,13 @@
 namespace App\Exports;
 
 use App\Event;
-use Maatwebsite\Excel\Concerns\FromCollection;
+// use Maatwebsite\Excel\Concerns\FromCollection;
+// use Maatwebsite\Excel\Concerns\FromQuery;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use Carbon\Carbon;
 
-class EventsExport implements FromCollection
+class EventsExport implements FromView
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -17,8 +20,12 @@ class EventsExport implements FromCollection
         $this->date = $date;
     }
 
-    public function collection()
+    public function view(): View
     {
-        return Event::whereDate('date','=', Carbon::parse($this->date))->get();
+        // dd(Event::query()->with('tickets')->whereDate('date','=', Carbon::parse($this->date))->get());
+        // return Event::with('tickets')->whereDate('date','=', Carbon::parse($this->date))->get();
+        return view('exports.tickets', [
+            'events' => Event::with('tickets', 'user')->whereDate('date','=', Carbon::parse($this->date))->get()
+        ]);
     }
 }

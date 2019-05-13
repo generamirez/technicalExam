@@ -15,13 +15,16 @@ class TicketsController extends Controller
      */
     public function store(Request $request)
     {
+        while($request->count > 0){
+            $ticket = new Ticket();
+            $ticket->user_id = $request->user;
+            $ticket->event_id = $request->event;
+            $ticket->is_used = 0;
+            $ticket->save();
 
-        $ticket = new Ticket();
-        $ticket->user_id = $request->user;
-        $ticket->event_id = $request->event;
-        $ticket->is_used = 0;
-        // return response()->json(['message'=>$ticket]);
-        $ticket->save();
+            $request->count--;
+        }
+
 
         return $ticket;
     }
@@ -65,7 +68,7 @@ class TicketsController extends Controller
 
     public function myTickets(Request $request){
         // return response()->json(['id'=>$request->id]);
-        $tickets = Ticket::with('event','event.user')->where('user_id','=',$request->id)->get();
+        $tickets = Ticket::with('event','event.user','event.tickets')->where('user_id','=',$request->id)->get();
         return $tickets;
     }
 

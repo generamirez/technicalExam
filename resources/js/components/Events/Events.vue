@@ -25,7 +25,7 @@
         <v-container class="my-2">
 
                         <v-layout row wrap>
-                        <v-spacer> </v-spacer>
+
                         <v-dialog max-width="600px">
 
                         <v-btn flat slot="activator" class="info ml-5"> Export Events </v-btn>
@@ -34,16 +34,16 @@
                                     <v-form class="pa-3" @submit.prevent="download">
                                         <v-menu>
                                             <v-text-field slot="activator" label="Date" prepend-icon="date_range" :value="date"> </v-text-field>
-                                            <v-date-picker v-model="date"> </v-date-picker>
+                                            <v-date-picker v-model="date" offset-y> </v-date-picker>
 
                                         </v-menu>
-                                         <v-btn type="submit success">Login</v-btn>
+                                         <v-btn type="submit success">Download</v-btn>
                                     </v-form>
                                 </v-card>
                         </v-dialog>
                         <v-flex xs12 sm4 md2>
-
-                             <v-text-field v-model="search" label="search"></v-text-field>
+                             <v-spacer> </v-spacer>
+                             <v-text-field v-model="search" label="search" prepend-icon="search"></v-text-field>
                         </v-flex>
                         </v-layout>
 
@@ -63,7 +63,17 @@
                         </v-card-text>
 
                         <v-card-actions class="justify-center">
-                            <v-btn class="info" :to="`/events/${event.id}`"> View Event </v-btn>
+                            <!-- <v-btn class="info" :to="`/events/${event.id}`"> View Event </v-btn> -->
+                         <v-dialog max-width="1000px">
+                             <v-btn flat slot="activator" class="info">View Event</v-btn>
+
+                                <v-card>
+                                   <Event :event="event">
+
+                                    </Event>
+                                </v-card>
+                        </v-dialog>
+
                         </v-card-actions>
                     </v-card>
                     </v-hover>
@@ -76,9 +86,11 @@
 <script>
 import Axios from "axios";
 import eventDownload from './eventDownload'
+import Event from "./Event.vue"
 export default {
     components:{
-        eventDownload
+        eventDownload,
+        Event
     },
     name: 'events',
     mounted() {
@@ -90,6 +102,7 @@ export default {
         })
             .then((response)=>{
                this.events = response.data
+               console.log(this.events[0])
             })
 
     },

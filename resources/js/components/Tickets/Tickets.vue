@@ -5,37 +5,26 @@
         </div>
 
         <div v-else class="body">
-            <!-- <table class="table table-primary">
-                <thead>
-                    <tr>
-                    <th scope="col">Ticket No.</th>
-                    <th scope="col">Event Name</th>
-                    <th scope="col">Coordinator Email</th>
-                    <th scope="col">Handle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="ticket in tickets" :key="ticket.id">
-                        <th scope="row">{{ticket.id}}</th>
-                        <td>{{ticket.event.name}}</td>
-                        <td>{{ticket.event.user.email}}</td>
-
-                        <td>
-                        <a class="btn btn-danger btn-md" @click.prevent='remove(ticket.id)' role="button">Delete</a>
-                        <router-link :to="`/events/${ticket.event.id}`" class="btn btn-primary"> View Event
-                        </router-link></td>
-
-                    </tr>
-                </tbody>
-            </table> -->
              <v-data-table :headers="headers" :items="tickets" class="elevation-1 mt-4" xs12 s12 md12 xl12>
                  <template v-slot:items="props">
                     <td>{{ props.item.id }}</td>
                     <td class="text-xs-left">{{ props.item.event.name }}</td>
                     <td class="text-xs-left">{{ props.item.event.user.email }}</td>
                     <td class="text-xs-left">
-                        <v-btn class="info" :to="`/events/${props.item.id}`">Show Event</v-btn>
-                        <v-btn class="danger" @click.prevent="remove(`${props.item.id}`)">Delete</v-btn>
+                        <v-card-actions class="justify-center">
+                            <!-- <v-btn class="info" :to="`/events/${event.id}`"> View Event </v-btn> -->
+                         <v-dialog max-width="1000px">
+                             <v-btn slot="activator" class="info"><v-icon>search </v-icon></v-btn>
+
+                                <v-card>
+                                   <Event :event="props.item.event">
+
+                                    </Event>
+                                </v-card>
+                        </v-dialog>
+                        <v-btn class="danger" @click.prevent="remove(`${props.item.id}`)"><v-icon>delete </v-icon></v-btn>
+                        </v-card-actions>
+
                     </td>
                 </template>
              </v-data-table>
@@ -45,7 +34,11 @@
 
 <script>
 import Axios from "axios";
+import Event from "../Events/Event"
 export default {
+    components:{
+        Event
+    },
     name: 'tickets',
 
     mounted() {
@@ -99,45 +92,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .search{
-        margin: 3%;
-        margin-left:78em;
-        border-radius:25px;
-    }
-
-    .card{
-        background-color: #EFF4c8;
-    }
-    .card-title{
-        color:#7dae8d;
-    }
-
-    .card-text{
-        color:#7dae8d;
-    }
-
-    .card-subtitle{
-        color: #AD423c;
-    }
-
-    .tickets{
-        height:200vh;
-    }
-
-    .tickets{
-        height:200vh;
-        text-align:center;
-    }
-
-    .body{
-        display: inline;
-    }
-
-    .error{
-        margin:auto;
-        padding-top: 20vh;
-    }
-
-</style>

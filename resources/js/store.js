@@ -4,12 +4,12 @@ const user = getLocalUser()
 
 export default{
     state: {
-       welcomeMessage:"wow",
-       currentUser: user,
-       isLoggedIn: !!user, //double because bool
-       loading: false,
-       auth_error: null,
-    },
+        welcomeMessage:"wow",
+        currentUser: user,
+        isLoggedIn: !!user, //double because bool
+        loading: false,
+        auth_error: null,
+     },
     getters: {
         welcome(state){
             return state.welcomeMessage
@@ -30,12 +30,10 @@ export default{
     mutations: {
         //anytime a commit happens, trigger mutation in store
         login(state){
-            // console.log('login')
             state.loading = true,
             state.authError = null
         },
         loginSuccess(state, payload){
-            // console.log('success')
             state.authError = null,
             state.isLoggedIn = true,
             state.loading = false,
@@ -47,19 +45,35 @@ export default{
             state.auth_error = payload.error
         },
         logout(state){
-            localStorage.removeItem('user'),
-            state.isLoggedIn = false,
-            state.currentUser = null
+            var headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.getters.currentUser.token,
+                'X-Requested-With' : "XMLHttpRequest"
+            }
+
+            Axios.post(`/api/auth/logout/`,{},{
+               headers: headers
+            })
+            .then((response)=>{
+                    localStorage.removeItem('user'),
+                    state.isLoggedIn = false,
+                    state.currentUser = null
+                    return response.data
+
+
+            }).catch((e)=>{
+                console.log(e)
+            })
+
         },
         getTicket(){
-            // console.log(this.getters.currentUser.id)
             Axios.post(`/api/auth/refreshUser/`,{
                 id: this.getters.currentUser.id,
             }).then((response)=>{
-                // console.log(response.data)
+
                 this.getters.currentUser.tickets = response.data.tickets
                 this.getters.currentUser.events = response.data.events
-                // console.log(this.getters.currentUser)
+
             })
         }
 
@@ -69,9 +83,8 @@ export default{
     actions: {
         login(context){
             context.commit('login')
+            this.state.auth_error = null
         },
-        getTicket(context){
-            // context.commit('getTicket')
-        }
+
     }
 }

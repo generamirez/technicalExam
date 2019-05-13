@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Exports\EventsExport;
+use App\Exports\TicketsExport;
 use Excel;
 
 class EventsController extends Controller
@@ -16,7 +17,7 @@ class EventsController extends Controller
      */
     public function index()
     {
-        return Event::with('tickets')->get();
+        return Event::with('tickets','user')->get();
     }
 
     /**
@@ -37,7 +38,19 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = new Event();
+
+        $event->name = $request->name;
+        $event->description = $request->description;
+        $event->date = $request->date;
+        $event->city = $request->city;
+        $event->maximum = $request->maximum;
+        $event->image = $request->image;
+        $event->user_id = $request->user;
+
+        $event->save();
+
+        return $event;
     }
 
     /**
@@ -86,6 +99,6 @@ class EventsController extends Controller
     }
 
     public function export(Request $request){
-        return Excel::download(new EventsExport($request->date), 'EventsOn'.$request->date.'.xlsx');
+        return Excel::download(new EventsExport($request->date), 'TicketsOn'.$request->date.'.xlsx');
     }
 }

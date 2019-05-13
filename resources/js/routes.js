@@ -35,10 +35,16 @@ export const routes = [
 },
 {
     path: '/export',
+    meta:{
+        requiresAuth: true
+    },
     component: eventDownload
 },
 {
     path: '/tickets',
+    meta:{
+        requiresAuth: true
+    },
     component: Tickets
 },
 
