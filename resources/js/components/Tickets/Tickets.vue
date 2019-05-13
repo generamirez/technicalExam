@@ -1,7 +1,9 @@
 <template>
     <div class="tickets">
         <div v-if="!tickets.length" class="body">
-               <h1 class="error"> You currently have no tickets </h1>
+                   <v-alert :value="true" type="error">
+     You have no tickets!
+    </v-alert>
         </div>
 
         <div v-else class="body">
