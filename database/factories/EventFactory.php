@@ -19,7 +19,7 @@ use Faker\Generator as Faker;
 $factory->define(Event::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence($nbwords = 4),
-        'description'=> $faker->paragraph($nbSentences = 2),
+        'description'=> $faker->paragraph($nbSentences = 1),
         'date'=> $faker->dateTimeBetween('+0 days', '+2 years')->format("Y-m-d"),
         'city'=>$faker->city,
         'maximum'=>$faker->numberBetween($min = 10, $max = 50),
