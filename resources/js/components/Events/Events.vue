@@ -45,7 +45,7 @@
                                             <v-text-field v-model="form.maximum" type = "number" prepend-icon="person_pin" placeholder="Maximum number of participants" :rules="[v => v > 0 || 'Number should be greater than 0']" > </v-text-field>
                                             <v-textarea v-model="form.description" label="Description" :rules="createRules" prepend-icon="description"></v-textarea>
                                             <v-menu>
-                                            <v-text-field slot="activator" label="Date" prepend-icon="date_range" :value="form.date" :rules="createRules"> </v-text-field>
+                                            <v-text-field slot="activator" label="Date" prepend-icon="date_range" :value="form.date" :rules="[v => !!v || `Enter a valid date`]"> </v-text-field>
                                             <v-date-picker v-model="form.date" offset-y> </v-date-picker>
                                             </v-menu>
                                             <v-btn type="submit" color="info" @click="createNew=false">Create Event</v-btn>
@@ -150,7 +150,6 @@ export default {
     },
     methods:{
          download(){
-             console.log(this.date)
             Axios.get(`/api/auth/exportEvents`,{
                 params:{
                     date: this.date
@@ -177,7 +176,6 @@ export default {
                 maximum: this.$data.form.maximum,
             })
             .then((response)=>{
-                console.log(response.data)
                 this.events.push(response.data)
             }).catch((e)=>{
                 console.log(e)
