@@ -144,7 +144,7 @@ export default {
     computed:{
        filteredEvents(){
             return this.events.filter((events)=>{
-                return events.name.match(this.search)
+                return events.name.toLowerCase().includes(this.search.toLowerCase())
             })
         }
     },
