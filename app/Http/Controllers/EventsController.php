@@ -38,19 +38,23 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+
         $event = new Event();
 
         $event->name = $request->name;
+
         $event->description = $request->description;
         $event->date = $request->date;
+
         $event->city = $request->city;
         $event->maximum = $request->maximum;
-        $event->image = $request->image;
+        // $event->image = $request->image;
+
         $event->user_id = $request->user;
 
         $event->save();
 
-        return $event;
+        return Event::with('user', 'tickets')->find($event->id);
     }
 
     /**

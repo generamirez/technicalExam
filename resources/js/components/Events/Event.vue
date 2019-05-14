@@ -29,8 +29,9 @@
 
                                  <div v-if="maxTickets > 0">
                                       <div class="body-1 my-2 green--text"> <h2>Get a ticket?</h2> </div>
-                                     <v-text-field md2 xs4 s4 v-model="buy" type = "number"> </v-text-field>
-                                    <v-btn class="info"  @click.prevent='join' md2  v-if="buy <= maxTickets && buy"><v-icon> add </v-icon></v-btn>
+                                     <v-text-field md2 xs4 s4 v-model="buy" type = "number" placeholder="Enter number of tickets"> </v-text-field>
+                                    <v-btn class="info" @click.prevent='join' md2  v-if="buy <= maxTickets && buy && buy > 0"><v-icon> add </v-icon></v-btn>
+                                    <v-btn v-else class="warning">Enter a valid number </v-btn>
                                  </div>
                                 <v-btn depressed class="info" v-if="maxTickets == 0">Event is full</v-btn>
 

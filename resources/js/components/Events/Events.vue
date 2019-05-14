@@ -1,33 +1,11 @@
 <<template>
-    <!-- <div class="events">
-            <router-view> </router-view>
-            <input type="text" placeholder="search here" v-model="search" class="col-md-2 search">
-
-         <div class="row justify-content-center">
-
-
-                <div class="card col-md-3 ml-3 mr-3 mb-5"  v-for="event in filteredEvents" :key="event.id" style="width: 18rem;">
-                   <router-link :to="`/events/${event.id}`">
-                    <img class="card-img" :src="event.image" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{event.name}}</h5>
-                        <h6 class="card-subtitle mb-2">{{event.date}}</h6>
-                        <p class="card-text">{{event.description}}</p>
-                    </div>
-                   </router-link>
-                </div>
-
-
-        </div>
-    </div> -->
     <v-layout>
 
         <v-container class="my-2">
 
                         <v-layout row wrap>
-
+                        <!-- Popup for export event -->
                         <v-dialog max-width="600px">
-
                         <v-btn flat slot="activator" class="info ml-5"> Export Events </v-btn>
                                 <v-card>
                                     <v-card-title><h1 class="lead-1">Export events </h1></v-card-title>
@@ -41,14 +19,58 @@
                                     </v-form>
                                 </v-card>
                         </v-dialog>
+
+                        <!-- popup for creating an event -->
+                        <v-dialog max-width="600px" v-model="createNew">
+                            <template v-slot:activator="{ on }">
+                                <v-btn color="success" v-on="on"><v-icon> add </v-icon></v-btn>
+                            </template>
+                        <v-card>
+                        <v-layout >
+                        <v-container >
+
+                                <v-flex xs12 sm12 md12 lg12>
+
+
+
+                                    <v-card class="text-xs-center">
+
+                                        <v-card-title primary-title>
+                                        <div>
+                                            <h3 class="headline">Create an Event</h3>
+                                        </div>
+                                    </v-card-title>
+                                        <v-flex>
+                                        <v-form @submit.prevent = "create" ref="form">
+
+                                            <v-text-field v-model="form.name" label="Name" :rules="createRules" ></v-text-field>
+
+                                            <v-text-field v-model="form.city" label="City" required :rules="createRules"></v-text-field>
+                                            <v-text-field v-model="form.maximum" type = "number" placeholder="Maximum number of participants" :rules="[v => v > 0 || 'Number should be greater than 0']" > </v-text-field>
+                                            <v-textarea v-model="form.description" label="Description" :rules="createRules"></v-textarea>
+                                            <v-menu>
+                                            <v-text-field slot="activator" label="Date" prepend-icon="date_range" :value="form.date" :rules="createRules"> </v-text-field>
+                                            <v-date-picker v-model="form.date" offset-y> </v-date-picker>
+                                            </v-menu>
+                                            <v-btn type="submit" color="info" @click="createNew=false">Create Event</v-btn>
+                                        </v-form>
+                                        </v-flex>
+
+                                    </v-card>
+                                </v-flex>
+                        </v-container>
+                        </v-layout>
+                        </v-card>
+                        </v-dialog>
+
+
                         <v-flex xs12 sm4 md2>
                              <v-spacer> </v-spacer>
                              <v-text-field v-model="search" label="search" prepend-icon="search"></v-text-field>
                         </v-flex>
                         </v-layout>
-
+            <!-- loop through the list of events -->
             <v-layout row wrap>
-
                 <v-flex xs12 sm6 md4 lg4 v-for="event in filteredEvents" :key="event.id">
                     <v-hover>
                     <v-card class="text-xs-center mx-5 my-2">
@@ -63,7 +85,6 @@
                         </v-card-text>
 
                         <v-card-actions class="justify-center">
-                            <!-- <v-btn class="info" :to="`/events/${event.id}`"> View Event </v-btn> -->
                          <v-dialog max-width="1000px">
                              <v-btn flat slot="activator" class="info">View Event</v-btn>
 
@@ -79,22 +100,21 @@
                     </v-hover>
                 </v-flex>
             </v-layout>
+
         </v-container>
   </v-layout>
 </template>
 
 <script>
 import Axios from "axios";
-import eventDownload from './eventDownload'
 import Event from "./Event.vue"
 export default {
     components:{
-        eventDownload,
-        Event
+        Event,
     },
     name: 'events',
     mounted() {
-        // console.log(this.$store.getters.currentUser)
+
         Axios.get('/api/auth/events',{
             params:{
 
@@ -102,7 +122,6 @@ export default {
         })
             .then((response)=>{
                this.events = response.data
-               console.log(this.events[0])
             })
 
     },
@@ -111,7 +130,19 @@ export default {
         return{
             events:[],
             search: "",
-            date: null
+            date: null,
+              form:{
+                name: '',
+                date: '',
+                description: '',
+                city: '',
+                maximum:''
+            },
+            createRules:[
+                v => !!v || "Please enter a valid input"
+            ],
+            createNew: false
+
         }
     },
     computed:{
@@ -130,7 +161,6 @@ export default {
                 },
                 responseType: 'blob'
             }).then((response)=>{
-                console.log(response)
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -138,8 +168,26 @@ export default {
                 document.body.appendChild(link);
                 link.click();
             }).catch((err)=>{
-                console.log(err)
             })
+        },
+        create(){
+            if(this.$refs.form.validate()){
+                 Axios.post(`/api/auth/events/`,{
+                user: this.$store.getters.currentUser.id,
+                name: this.$data.form.name,
+                date: this.$data.form.date,
+                description: this.$data.form.description,
+                city: this.$data.form.city,
+                maximum: this.$data.form.maximum,
+            })
+            .then((response)=>{
+                console.log(response.data)
+                this.events.push(response.data)
+            }).catch((e)=>{
+                console.log(e)
+            })
+            }
+
         }
     }
 }
