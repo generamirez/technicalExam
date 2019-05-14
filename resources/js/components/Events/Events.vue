@@ -28,11 +28,7 @@
                         <v-card>
                         <v-layout >
                         <v-container >
-
                                 <v-flex xs12 sm12 md12 lg12>
-
-
-
                                     <v-card class="text-xs-center">
 
                                         <v-card-title primary-title>

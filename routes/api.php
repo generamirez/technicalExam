@@ -31,6 +31,7 @@ Route::group([
 
     Route::resource('events', 'EventsController');
     Route::resource('tickets', 'TicketsController');
+    Route::resource('users', 'UserController');
 
 });
 
