@@ -43,11 +43,11 @@
                                         <v-flex>
                                         <v-form @submit.prevent = "create" ref="form">
 
-                                            <v-text-field v-model="form.name" label="Name" :rules="createRules" ></v-text-field>
+                                            <v-text-field v-model="form.name" label="Name" :rules="createRules" prepend-icon="label_important" ></v-text-field>
 
-                                            <v-text-field v-model="form.city" label="City" required :rules="createRules"></v-text-field>
-                                            <v-text-field v-model="form.maximum" type = "number" placeholder="Maximum number of participants" :rules="[v => v > 0 || 'Number should be greater than 0']" > </v-text-field>
-                                            <v-textarea v-model="form.description" label="Description" :rules="createRules"></v-textarea>
+                                            <v-text-field v-model="form.city" label="City" required :rules="createRules" prepend-icon="location_on"></v-text-field>
+                                            <v-text-field v-model="form.maximum" type = "number" prepend-icon="person_pin" placeholder="Maximum number of participants" :rules="[v => v > 0 || 'Number should be greater than 0']" > </v-text-field>
+                                            <v-textarea v-model="form.description" label="Description" :rules="createRules" prepend-icon="description"></v-textarea>
                                             <v-menu>
                                             <v-text-field slot="activator" label="Date" prepend-icon="date_range" :value="form.date" :rules="createRules"> </v-text-field>
                                             <v-date-picker v-model="form.date" offset-y> </v-date-picker>
