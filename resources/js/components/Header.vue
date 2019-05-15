@@ -29,12 +29,6 @@
                                             <h3 class="headline">Register</h3>
                                         </div>
 
-                                        <!-- <div v-if="errors.length" class="body">
-                                            <v-alert :value="true" type="error">
-                                        Email is already in use
-                                            </v-alert>
-                                        </div> -->
-
                                     </v-card-title>
                                         <v-flex>
                                         <v-form @submit.prevent = "register" ref="form">
@@ -124,6 +118,9 @@ import Axios from "axios";
                     }).then((response)=>{
                         if(response.data.code == 422){
                            this.error=true
+                        }
+                        else{
+                            this.registerForm = false
                         }
                     })
                    }

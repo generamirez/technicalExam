@@ -1,9 +1,15 @@
 <<template>
     <v-layout>
 
-        <v-container class="my-2">
 
+        <v-container class="my-2">
+                        <v-layout row>
+                            <v-alert  v-model="alert" dismissible type="success" mt-5 >
+                                Event has been created
+                            </v-alert>
+                        </v-layout>
                         <v-layout row wrap>
+
                         <!-- Popup for export event -->
                         <v-dialog max-width="600px">
                         <v-btn flat slot="activator" class="info ml-5"> Export Events </v-btn>
@@ -137,7 +143,8 @@ export default {
             createRules:[
                 v => !!v || "Please enter a valid input"
             ],
-            createNew: false
+            createNew: false,
+            alert: false,
 
         }
     },
@@ -177,6 +184,7 @@ export default {
             })
             .then((response)=>{
                 this.events.push(response.data)
+                this.alert = true
             }).catch((e)=>{
                 console.log(e)
             })

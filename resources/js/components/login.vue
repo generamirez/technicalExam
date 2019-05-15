@@ -56,7 +56,6 @@ export default {
             .catch((error)=>{
                 this.error = true
                 this.$store.commit('loginFailed', {error})
-                // console.log(this.$store.getters.authError)
             })
              }
 

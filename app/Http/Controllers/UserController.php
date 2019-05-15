@@ -10,7 +10,6 @@ use Validator;
 class UserController extends Controller
 {
     public function me(Request $request){
-        // return response()->json(['message'=>$request->all()]);
         return User::with('events', 'tickets')->find($request->id);
     }
 

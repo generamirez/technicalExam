@@ -16,8 +16,6 @@
                     <td class="text-xs-left">{{ props.item.event.name }}</td>
                     <td class="text-xs-left">{{ props.item.event.user.email }}</td>
                     <td class="text-xs-left">
-
-                            <!-- <v-btn class="info" :to="`/events/${event.id}`"> View Event </v-btn> -->
                          <v-dialog max-width="1000px">
                              <v-btn slot="activator" class="info"><v-icon>search </v-icon></v-btn>
 
@@ -45,7 +43,6 @@ export default {
         Event
     },
     name: 'tickets',
-
     mounted() {
         Axios.get('/api/auth/myTickets',{
             params:{

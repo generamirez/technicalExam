@@ -63,20 +63,7 @@ export default {
         event: null
     },
     mounted() {
-        // Axios.get(`/api/auth/events/${this.$route.params.id}`)
-        //     .then((response)=>{
-        //         this.event = response.data
-        //         this.image = response.data.image
-                this.maxTickets = this.event.maximum - this.event.tickets.length
-        //         this.hasLoaded = true
-
-        //     })
-        // console.log(this.event)
-
-
-
-
-
+         this.maxTickets = this.event.maximum - this.event.tickets.length
     },
 
     data(){
