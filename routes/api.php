@@ -21,17 +21,20 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
-    Route::get('myTickets', 'TicketsController@myTickets');
-
-    Route::get('exportEvents', 'EventsController@export');
-    Route::post('refreshUser', 'UserController@me');
-    Route::get('checkTicket', 'TicketsController@hasJoined');
-
-    Route::resource('events', 'EventsController');
-    Route::resource('tickets', 'TicketsController');
     Route::resource('users', 'UserController');
+    Route::group(['middleware' => 'jwt.auth'], function ($router) {
+        Route::post('me', 'AuthController@me');
+
+        Route::get('myTickets', 'TicketsController@myTickets');
+
+        Route::get('exportEvents', 'EventsController@export');
+        Route::post('refreshUser', 'UserController@me');
+        Route::get('checkTicket', 'TicketsController@hasJoined');
+
+        Route::resource('events', 'EventsController');
+        Route::resource('tickets', 'TicketsController');
+
+    });
 
 });
 

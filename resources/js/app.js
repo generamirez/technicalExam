@@ -16,6 +16,7 @@ import {routes} from './routes'
 import MainApp from './components/MainApp.vue'
 import StoreData from './store'
 import Vuetify from 'vuetify'
+import Axios from 'axios';
 
 
 Vue.use(Vuetify)
@@ -46,6 +47,8 @@ router.beforeEach((to, from, next)=>{
 
 
 })
+
+// Axios.defaults.headers.common["Authorization"] = `Bearer ${store.getters.currentUser.token}`
 
 const app = new Vue({
     el: '#app',router,

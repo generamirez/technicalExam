@@ -118,6 +118,11 @@ export default {
     mounted() {
 
         Axios.get('/api/auth/events',{
+               headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                    'X-Requested-With' : "XMLHttpRequest"
+                },
             params:{
 
             }
@@ -158,6 +163,11 @@ export default {
     methods:{
          download(){
             Axios.get(`/api/auth/exportEvents`,{
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                    'X-Requested-With' : "XMLHttpRequest"
+                },
                 params:{
                     date: this.date
                 },
@@ -181,6 +191,12 @@ export default {
                 description: this.$data.form.description,
                 city: this.$data.form.city,
                 maximum: this.$data.form.maximum,
+            },{
+                 headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                    'X-Requested-With' : "XMLHttpRequest"
+                },
             })
             .then((response)=>{
                 this.events.push(response.data)

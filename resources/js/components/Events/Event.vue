@@ -84,6 +84,12 @@ export default {
                 user: this.$store.getters.currentUser.id,
                 event: this.event.id,
                 count: this.buy
+            },{
+                headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                'X-Requested-With' : "XMLHttpRequest"
+            },
             })
             .then((response)=>{
                 this.$store.commit('getTicket')

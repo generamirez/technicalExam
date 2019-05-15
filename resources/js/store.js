@@ -69,6 +69,12 @@ export default{
         getTicket(){
             Axios.post(`/api/auth/refreshUser/`,{
                 id: this.getters.currentUser.id,
+            },{
+                headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.getters.currentUser.token,
+                'X-Requested-With' : "XMLHttpRequest"
+                }
             }).then((response)=>{
 
                 this.getters.currentUser.tickets = response.data.tickets

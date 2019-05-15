@@ -45,9 +45,15 @@ export default {
     name: 'tickets',
     mounted() {
         Axios.get('/api/auth/myTickets',{
+              headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                'X-Requested-With' : "XMLHttpRequest"
+            },
             params:{
                 id: this.$store.getters.currentUser.id
-            }
+            },
+
         })
             .then((response)=>{
                 // console.log(response.data)
@@ -75,13 +81,24 @@ export default {
         }
 
     },
-    computed:{
-
-    },
     methods:{
         remove(id){
-           Axios.delete(`api/auth/tickets/${id}`).then((res)=>{
+           Axios.delete(`api/auth/tickets/${id}`,{
+               headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                    'X-Requested-With' : "XMLHttpRequest"
+                },
+               data:{
+
+               }
+           }).then((res)=>{
                 Axios.get('/api/auth/myTickets',{
+                    headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.$store.getters.currentUser.token,
+                    'X-Requested-With' : "XMLHttpRequest"
+                },
                 params:{
                     id: this.$store.getters.currentUser.id
                     }
