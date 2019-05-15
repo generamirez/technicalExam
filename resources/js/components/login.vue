@@ -8,13 +8,14 @@
         <v-card-title primary-title>
 
           <div>
-            <h3 class="headline">Login</h3>
+            <h3 class="headline" v-if="!this.$store.getters.currentUser">Login</h3>
+            <h3 v-else class="headline"> You're already logged in </h3>
 
            </div>
 
         </v-card-title>
         <v-card-text>
-            <v-form @submit.prevent="authenticate" id="login" class="px-3" ref="form">
+            <v-form @submit.prevent="authenticate" id="login" class="px-3" ref="form" v-if="!this.$store.getters.currentUser">
                 <v-text-field v-model="form.email" label="email" prepend-icon="email" :rules="[ v=> !!v || 'Please enter your email address', v => /.+@.+/.test(v) || 'E-mail must be valid'] "  ></v-text-field>
                 <v-text-field v-model="form.password" label="password" type="password" prepend-icon="fingerprint" :rules="[ v=> !!v || 'Please enter your password'] "></v-text-field>
 
