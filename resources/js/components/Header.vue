@@ -122,7 +122,7 @@ import Axios from "axios";
                         else{
                             this.$data.form.email = "",
                             this.$data.form.name = "",
-                            this.$data.form.password = "",
+                            this.$data.form.password = ""
                             this.registerForm = false
                         }
                     })

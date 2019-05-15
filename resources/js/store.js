@@ -58,9 +58,8 @@ export default{
                     localStorage.removeItem('user'),
                     state.isLoggedIn = false,
                     state.currentUser = null
-                    return response.data
 
-
+                    return true;
             }).catch((e)=>{
                 console.log(e)
             })

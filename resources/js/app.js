@@ -38,9 +38,6 @@ router.beforeEach((to, from, next)=>{
     if(requiresAuth && !currentUser){
         next('/')
     }
-    else if(to.path == '/'&& currentUser){
-        next('/events')
-    }
     else{
         next()
     }
