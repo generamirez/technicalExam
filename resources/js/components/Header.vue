@@ -120,6 +120,9 @@ import Axios from "axios";
                            this.error=true
                         }
                         else{
+                            this.$data.form.email = "",
+                            this.$data.form.name = "",
+                            this.$data.form.password = "",
                             this.registerForm = false
                         }
                     })

@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex xs10 sm6 offset-sm3 pt-5 pl-4>
         <v-alert  v-model="error" dismissible type="error" mt-5 >
-                                        Invalid credentials
+                Invalid credentials
             </v-alert>
       <v-card class>
         <v-card-title primary-title>
@@ -50,6 +50,7 @@ export default {
             this.$store.dispatch('login')
             login(this.$data.form).then((res)=>{
                 //change loading state to false and authenticated user
+
                 this.$store.commit('loginSuccess', res)
                 this.$router.push({path: '/events'})
             })
